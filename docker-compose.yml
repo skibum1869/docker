@@ -28,7 +28,7 @@ services:
     environment:
       WEBPASSWORD: 'dnsoverhttps'
       DNS1: '10.0.0.2#5054'
-      DNS2: '10.0.0.2#5053'
+      DNS2: '10.0.0.2#5054'
       TZ: 'Etc/UTC'
       DNSMASQ_LISTENING: 'all'
       IPv6: 'false'
