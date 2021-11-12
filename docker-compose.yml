@@ -47,10 +47,7 @@ services:
 
 volumes:
   pihole_etc:
-    driver: local
-
   pihole_dnsmasq:
-    driver: local
 
 networks:
   pihole_net:
