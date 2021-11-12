@@ -33,12 +33,12 @@ services:
       DNSMASQ_LISTENING: 'all'
       IPv6: 'false'
     volumes:
-       - type: volume
-         source: pihole_etc
-         target: /etc/pihole/
-       - type: volume
-         source: pihole_dnsmasq
-         target: /etc/dnsmasq.d/
+     - type: volume
+       source: pihole_etc
+       target: /etc/pihole/
+     - type: volume
+       source: pihole_dnsmasq
+       target: /etc/dnsmasq.d/
     dns:
       - 127.0.0.1
       - 9.9.9.9
