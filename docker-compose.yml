@@ -51,9 +51,6 @@ volumes:
 
   pihole_dnsmasq:
     name: pihole_dnsmasq
-    
-  static_content:
-    name: proxy_static_content
 
 networks:
   pihole_net:
