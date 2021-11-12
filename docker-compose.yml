@@ -47,10 +47,10 @@ services:
 
 volumes:
   pihole_etc:
-    name: pihole_etc
+    driver: local
 
   pihole_dnsmasq:
-    name: pihole_dnsmasq
+    driver: local
 
 networks:
   pihole_net:
