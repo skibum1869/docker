@@ -32,11 +32,28 @@ services:
       TZ: 'Etc/UTC'
       DNSMASQ_LISTENING: 'all'
       IPv6: 'false'
+    volumes:
+       - type: volume
+         source: pihole_etc
+         target: /etc/pihole/
+       - type: volume
+         source: pihole_dnsmasq
+         target: /etc/dnsmasq.d/
     dns:
       - 127.0.0.1
       - 9.9.9.9
     cap_add:
       - NET_ADMIN
+
+volumes:
+  pihole_etc:
+    name: pihole_etc
+
+  pihole_dnsmasq:
+    name: pihole_dnsmasq
+    
+  static_content:
+    name: proxy_static_content
 
 networks:
   pihole_net:
