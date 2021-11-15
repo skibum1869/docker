@@ -10,7 +10,7 @@ services:
       UPSTREAM2: 'https://149.112.112.112/dns-query'
     networks:
       pihole_net:
-        ipv4_address: 10.0.0.2
+        ipv4_address: 10.5.11.2
 
   pihole:
     container_name: pihole
@@ -24,12 +24,12 @@ services:
       - "443:443/tcp"
     networks:
       pihole_net:
-        ipv4_address: 10.0.0.3
+        ipv4_address: 10.5.11.3
     environment:
       WEBPASSWORD: 'dnsoverhttps'
-      DNS1: '10.0.0.2#5054'
-      DNS2: '10.0.0.2#5054'
-      TZ: 'Etc/UTC'
+      WEBTHEME: 'default-dark'
+      PIHOLE_DNS_: '10.5.11.2#5054'
+      TZ: 'UTC'
       DNSMASQ_LISTENING: 'all'
       IPv6: 'false'
     volumes:
@@ -54,4 +54,4 @@ networks:
     driver: bridge
     ipam:
      config:
-       - subnet: 10.0.0.0/29
+       - subnet: 10.5.11.0/29
