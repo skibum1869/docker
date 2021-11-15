@@ -27,9 +27,9 @@ services:
         ipv4_address: 10.5.11.3
     environment:
       WEBPASSWORD: 'dnsoverhttps'
-      DNS1: '10.5.11.2#5054'
-      DNS2: '10.5.11.2#5054'
-      TZ: 'Etc/UTC'
+      WEBTHEME: 'default-dark'
+      PIHOLE_DNS_: '10.5.11.2#5054'
+      TZ: 'UTC'
       DNSMASQ_LISTENING: 'all'
       IPv6: 'false'
     volumes:
