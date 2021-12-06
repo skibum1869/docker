@@ -19,6 +19,7 @@ services:
       TZ: 'UTC'
       DNSMASQ_USER: 'root'
       DNSMASQ_LISTENING: 'all'
+      DNSSEC: 'true'
       IPv6: 'false'
     volumes:
      - type: volume
