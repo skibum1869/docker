@@ -1,0 +1,38 @@
+version: "3.5"
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    ports: 
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    environment:
+      WEBPASSWORD: 'CHANGEME'
+      WEBTHEME: 'default-dark'
+      WEBUIBOXEDLAYOUT: 'traditional'
+      PIHOLE_DNS_: 9.9.9.9;149.112.112.112
+      TZ: 'UTC'
+      DNSMASQ_USER: 'root'
+      DNSMASQ_LISTENING: 'all'
+      IPv6: 'false'
+    volumes:
+     - type: volume
+       source: pihole_etc
+       target: /etc/pihole/
+     - type: volume
+       source: pihole_dnsmasq
+       target: /etc/dnsmasq.d/
+    dns:
+      - 9.9.9.9
+      - 149.112.112.112
+    cap_add:
+      - NET_ADMIN
+
+volumes:
+  pihole_etc:
+  pihole_dnsmasq:
