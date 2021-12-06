@@ -26,10 +26,12 @@ services:
       pihole_net:
         ipv4_address: 10.5.11.3
     environment:
-      WEBPASSWORD: 'dnsoverhttps'
+      WEBPASSWORD: 'CHANGEME'
       WEBTHEME: 'default-dark'
+      WEBUIBOXEDLAYOUT: 'traditional'
       PIHOLE_DNS_: '10.5.11.2#5054'
       TZ: 'UTC'
+      DNSMASQ_USER: 'root'
       DNSMASQ_LISTENING: 'all'
       IPv6: 'false'
     volumes:
