@@ -1,0 +1,57 @@
+version: "3.5"
+
+services:
+  cloudflared:
+    container_name: cloudflared
+    image: visibilityspots/cloudflared:latest
+    restart: unless-stopped
+    environment:
+      UPSTREAM1: 'https://9.9.9.9/dns-query'
+      UPSTREAM2: 'https://149.112.112.112/dns-query'
+    networks:
+      pihole_net:
+        ipv4_address: 10.5.11.2
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    ports: 
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    networks:
+      pihole_net:
+        ipv4_address: 10.5.11.3
+    environment:
+      WEBPASSWORD: 'CHANGEME'
+      WEBTHEME: 'default-dark'
+      PIHOLE_DNS_: '10.5.11.2#5054'
+      TZ: 'UTC'
+      DNSMASQ_LISTENING: 'all'
+      IPv6: 'false'
+    volumes:
+     - type: volume
+       source: pihole_etc
+       target: /etc/pihole/
+     - type: volume
+       source: pihole_dnsmasq
+       target: /etc/dnsmasq.d/
+    dns:
+      - 127.0.0.1
+      - 9.9.9.9
+    cap_add:
+      - NET_ADMIN
+
+volumes:
+  pihole_etc:
+  pihole_dnsmasq:
+
+networks:
+  pihole_net:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.11.0/29
