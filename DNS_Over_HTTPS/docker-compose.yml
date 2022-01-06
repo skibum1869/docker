@@ -31,7 +31,7 @@ services:
       WEBUIBOXEDLAYOUT: 'traditional'
       PIHOLE_DNS_: '10.5.11.2#5054'
       TZ: 'UTC'
-      DNSMASQ_USER: 'root'
+      DNSMASQ_USER: 'pihole'
       DNSMASQ_LISTENING: 'all'
       DNSSEC: 'true'
       IPv6: 'false'

@@ -17,7 +17,7 @@ services:
       WEBUIBOXEDLAYOUT: 'traditional'
       PIHOLE_DNS_: 9.9.9.9;149.112.112.112
       TZ: 'UTC'
-      DNSMASQ_USER: 'root'
+      DNSMASQ_USER: 'pihole'
       DNSMASQ_LISTENING: 'all'
       DNSSEC: 'true'
       IPv6: 'false'
