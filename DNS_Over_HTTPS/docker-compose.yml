@@ -7,8 +7,8 @@ services:
     image: crazymax/cloudflared:latest
     restart: unless-stopped
     environment:
-      TZ: 'UTC'
-      TUNNEL_DNS_UPSTREAM: 'https://9.9.9.9/dns-query,https://149.112.112.112/dns-query'
+      - "TZ=UTC"
+      - "TUNNEL_DNS_UPSTREAM=https://9.9.9.9/dns-query,https://149.112.112.112/dns-query"
     networks:
       pihole_net:
         ipv4_address: 10.5.11.2
