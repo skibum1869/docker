@@ -3,17 +3,19 @@ version: "3.5"
 services:
   cloudflared:
     container_name: cloudflared
-    image: visibilityspots/cloudflared:latest
+    hostname: cloudflared
+    image: crazymax/cloudflared:latest
     restart: unless-stopped
     environment:
-      UPSTREAM1: 'https://9.9.9.9/dns-query'
-      UPSTREAM2: 'https://149.112.112.112/dns-query'
+      TZ: 'UTC'
+      TUNNEL_DNS_UPSTREAM: 'https://9.9.9.9/dns-query,https://149.112.112.112/dns-query'
     networks:
       pihole_net:
         ipv4_address: 10.5.11.2
 
   pihole:
     container_name: pihole
+    hostname: pihole
     image: pihole/pihole:latest
     restart: unless-stopped
     ports: 
@@ -27,10 +29,10 @@ services:
         ipv4_address: 10.5.11.3
     environment:
       WEBPASSWORD: 'CHANGEME'
+      TZ: 'UTC'
       WEBTHEME: 'default-dark'
       WEBUIBOXEDLAYOUT: 'traditional'
       PIHOLE_DNS_: '10.5.11.2#5054'
-      TZ: 'UTC'
       DNSMASQ_USER: 'pihole'
       DNSMASQ_LISTENING: 'all'
       DNSSEC: 'true'
