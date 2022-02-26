@@ -1,14 +1,11 @@
 version: "3.5"
 
 services:
-  cloudflared:
-    container_name: cloudflared
-    hostname: cloudflared
-    image: crazymax/cloudflared:latest
+  unbound:
+    container_name: unbound
+    hostname: unbound
+    image: klutchell/unbound
     restart: unless-stopped
-    environment:
-      - "TZ=UTC"
-      - "TUNNEL_DNS_UPSTREAM=https://9.9.9.9/dns-query,https://149.112.112.112/dns-query"
     networks:
       pihole_net:
         ipv4_address: 10.5.11.2
@@ -32,7 +29,7 @@ services:
       TZ: 'UTC'
       WEBTHEME: 'default-dark'
       WEBUIBOXEDLAYOUT: 'traditional'
-      PIHOLE_DNS_: '10.5.11.2#5053;9.9.9.9'
+      PIHOLE_DNS_: '10.5.11.2;10.5.11.2'
       DNSMASQ_USER: 'pihole'
       DNSMASQ_LISTENING: 'all'
       DNSSEC: 'true'
