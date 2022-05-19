@@ -1,6 +1,15 @@
 version: "3.5"
 
 services:
+  unbound:
+    container_name: unbound
+    hostname: unbound
+    image: klutchell/unbound
+    restart: unless-stopped
+    networks:
+      pihole_net:
+        ipv4_address: 10.5.11.2
+
   pihole:
     container_name: pihole
     hostname: pihole
@@ -10,14 +19,17 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp"
-      - "80:80/tcp"
-      - "443:443/tcp"
+      - "8080:80/tcp"
+      - "10443:443/tcp"
+    networks:
+      pihole_net:
+        ipv4_address: 10.5.11.3
     environment:
       WEBPASSWORD: 'CHANGEME'
       TZ: 'UTC'
       WEBTHEME: 'default-dark'
       WEBUIBOXEDLAYOUT: 'traditional'
-      PIHOLE_DNS_: 9.9.9.9;149.112.112.112
+      PIHOLE_DNS_: '10.5.11.2;10.5.11.2'
       DNSMASQ_USER: 'pihole'
       DNSMASQ_LISTENING: 'all'
       DNSSEC: 'true'
@@ -30,11 +42,18 @@ services:
        source: pihole_dnsmasq
        target: /etc/dnsmasq.d/
     dns:
+      - 127.0.0.1
       - 9.9.9.9
-      - 149.112.112.112
     cap_add:
       - NET_ADMIN
 
 volumes:
   pihole_etc:
   pihole_dnsmasq:
+
+networks:
+  pihole_net:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.11.0/29
