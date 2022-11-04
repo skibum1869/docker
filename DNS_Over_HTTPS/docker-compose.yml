@@ -6,6 +6,10 @@ services:
     hostname: unbound
     image: klutchell/unbound
     restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       pihole_net:
         ipv4_address: 10.5.11.2
@@ -34,6 +38,10 @@ services:
       DNSMASQ_LISTENING: 'all'
       DNSSEC: 'true'
       IPv6: 'false'
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
      - type: volume
        source: pihole_etc
