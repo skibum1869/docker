@@ -55,6 +55,32 @@ services:
     cap_add:
       - NET_ADMIN
 
+  owncloud:
+    container_name: owncloud
+    hostname: owncloud
+    image: owncloud
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    ports:
+     - "8000:80/tcp"
+    links:
+     - postgres:owncloud-db
+
+  postgres:
+    container_name: postgres
+    hostname: postgres
+    image: postgres
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      - POSTGRES_PASSWORD=changeme
+
   watchtower:
     container_name: watchtower
     hostname: watchtower
@@ -74,6 +100,7 @@ services:
 volumes:
   pihole_etc:
   pihole_dnsmasq:
+  owncloud:
 
 networks:
   pihole_net:
