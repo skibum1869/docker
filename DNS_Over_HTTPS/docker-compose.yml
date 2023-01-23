@@ -33,7 +33,7 @@ services:
       TZ: 'UTC'
       WEBTHEME: 'default-dark'
       WEBUIBOXEDLAYOUT: 'traditional'
-      PIHOLE_DNS_: '10.5.11.2;10.5.11.2'
+      PIHOLE_DNS_: '76.76.2.145;10.5.11.2'
       DNSMASQ_USER: 'pihole'
       DNSMASQ_LISTENING: 'all'
       DNSSEC: 'true'
