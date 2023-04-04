@@ -79,7 +79,7 @@ services:
     links:
       - nextcloud_db
     volumes:
-      - /volume1/docker/Nextcloud/config:/var/www/html
+      - /volume1/docker/nextcloud/config:/var/www/html
     environment:
       - MYSQL_PASSWORD=CHANGEME
       - MYSQL_DATABASE=nextcloud
