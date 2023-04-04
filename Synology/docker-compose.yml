@@ -54,6 +54,37 @@ services:
       - 9.9.9.9
     cap_add:
       - NET_ADMIN
+
+  nextcloud_db:
+    container_name: mariadb
+    hostname: mariadb
+    image: mariadb:10.5
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - /volume1/docker/Nextcloud/database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=CHANGEME
+      - MYSQL_PASSWORD=CHANGEME
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  nextcloud:
+    container_name: nextcloud
+    hostname: nextcloud
+    image: nextcloud
+    restart: always
+    ports:
+      - 8080:80
+    links:
+      - nextcloud_db
+    volumes:
+      - /volume1/docker/Nextcloud/config:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=CHANGEME
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
       
   watchtower:
     container_name: watchtower
