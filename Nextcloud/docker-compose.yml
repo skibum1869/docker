@@ -1,0 +1,49 @@
+version: "3.5"
+
+services:
+  nextcloud_db:
+    container_name: nextcloud_db
+    hostname: nextcloud_db
+    image: mariadb:10.6
+    restart: unless-stopped
+    command: --innodb-read-only-compressed=OFF --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - /volume1/docker/nextcloud/database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=CHANGEME
+      - MYSQL_PASSWORD=CHANGEME
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  nextcloud:
+    container_name: nextcloud
+    hostname: nextcloud
+    image: nextcloud
+    restart: unless-stopped
+    ports:
+      - 8888:80
+    links:
+      - nextcloud_db
+    volumes:
+      - /volume1/docker/nextcloud/config:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=CHANGEME
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=nextcloud_db
+
+  watchtower:
+    container_name: watchtower
+    hostname: watchtower
+    image: containrrr/watchtower
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_ROLLING_RESTART=true
