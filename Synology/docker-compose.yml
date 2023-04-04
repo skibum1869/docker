@@ -55,7 +55,6 @@ services:
     cap_add:
       - NET_ADMIN
 
-
   nextcloud_db:
     container_name: nextcloud_db
     hostname: nextcloud_db
@@ -86,6 +85,22 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_HOST=nextcloud_db
+
+  watchtower:
+    container_name: watchtower
+    hostname: watchtower
+    image: containrrr/watchtower
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_ROLLING_RESTART=true
 
 volumes:
   pihole_etc:
