@@ -6,8 +6,6 @@ services:
     hostname: unbound
     image: klutchell/unbound
     restart: unless-stopped
-    volumes:
-      - "./unbound:/etc/unbound/custom.conf.d"
     logging:
       options:
         max-size: "10m"
