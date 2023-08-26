@@ -105,7 +105,6 @@ services:
 volumes:
   pihole_etc:
   pihole_dnsmasq:
-  owncloud:
 
 networks:
   pihole_net:
