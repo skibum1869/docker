@@ -11,49 +11,29 @@ services:
         max-size: "10m"
         max-file: "3"
     networks:
-      pihole_net:
+      private_network:
         ipv4_address: 10.5.11.2
 
-  pihole:
-    container_name: pihole
-    hostname: pihole
-    image: pihole/pihole:latest
+  adguard:
+    depends_on: [unbound]
+    container_name: adguard
+    image: adguard/adguardhome
     restart: unless-stopped
-    ports: 
+    hostname: adguard
+    # Volumes store your data between container upgrades
+    volumes:
+      - "./adguard/opt-adguard-work:/opt/adguardhome/work"
+      - "./adguard/opt-adguard-conf:/opt/adguardhome/conf"
+    ports:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp"
-      - "8080:80/tcp"
-      - "10443:443/tcp"
+      - "8080:8080/tcp"
+      - "10443:10443/tcp"
+      - "3000:3000/tcp"
     networks:
-      pihole_net:
+      private_network:
         ipv4_address: 10.5.11.3
-    environment:
-      WEBPASSWORD: 'CHANGEME'
-      TZ: 'UTC'
-      WEBTHEME: 'default-dark'
-      WEBUIBOXEDLAYOUT: 'traditional'
-      PIHOLE_DNS_: '10.5.11.2;10.5.11.2'
-      DNSMASQ_USER: 'pihole'
-      DNSMASQ_LISTENING: 'all'
-      DNSSEC: 'true'
-      IPv6: 'false'
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    volumes:
-     - type: volume
-       source: pihole_etc
-       target: /etc/pihole/
-     - type: volume
-       source: pihole_dnsmasq
-       target: /etc/dnsmasq.d/
-    dns:
-      - 127.0.0.1
-      - 9.9.9.9
-    cap_add:
-      - NET_ADMIN
 
   nextcloud_db:
     container_name: nextcloud_db
@@ -107,7 +87,7 @@ volumes:
   pihole_dnsmasq:
 
 networks:
-  pihole_net:
+  private_network:
     driver: bridge
     ipam:
      config:
