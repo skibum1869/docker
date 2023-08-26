@@ -13,7 +13,7 @@ services:
         max-size: "10m"
         max-file: "3"
     networks:
-      pihole_net:
+      private_network:
         ipv4_address: 10.5.11.2
 
   wireguard:
