@@ -2,14 +2,18 @@ version: "3.5"
 
 services:
   unbound:
-    image: mvance/unbound:latest
     container_name: unbound
-    restart: unless-stopped
     hostname: unbound
+    image: klutchell/unbound
+    restart: unless-stopped
     volumes:
-      - "./unbound:/opt/unbound/etc/unbound/"
+      - "./unbound:/etc/unbound/custom.conf.d"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
-      private_network:
+      pihole_net:
         ipv4_address: 10.5.11.2
 
   wireguard:
