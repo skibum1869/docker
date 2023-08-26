@@ -56,8 +56,9 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp"
-      - "80:3000/tcp"
+      - "80:80/tcp"
       - "443:443/tcp"
+      - "3000:3000/tcp"
     networks:
       private_network:
         ipv4_address: 10.5.11.3
