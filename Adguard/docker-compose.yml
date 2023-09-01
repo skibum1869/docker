@@ -27,8 +27,8 @@ services:
       - PGID=1000
       - TZ=Europe/London # Change to your timezone
       - SERVERPORT=51820
-      #- SERVERURL=my.ddns.net #optional - For use with DDNS (Uncomment to use)
-      - PEERS=1 # How many peers to generate for you (clients)
+      - SERVERURL=skibum1869.synology.me #optional - For use with DDNS (Uncomment to use)
+      - PEERS=5 # How many peers to generate for you (clients)
       - PEERDNS=10.5.11.3 # Set it to point to adguard home
       - INTERNAL_SUBNET=10.6.0.0
       #- ALLOWEDIPS=10.5.11.0/29 # optional - split tunnel for web panel and DNS traffic only
