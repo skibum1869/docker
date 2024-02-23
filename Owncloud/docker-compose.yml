@@ -1,50 +1,10 @@
 version: "3.5"
 
 services:
-  unbound:
-    container_name: unbound
-    hostname: unbound
-    image: klutchell/unbound
-    restart: unless-stopped
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    networks:
-      private_network:
-        ipv4_address: 10.5.11.2
-
-  adguard:
-    depends_on: [unbound]
-    container_name: adguard
-    image: adguard/adguardhome
-    restart: unless-stopped
-    hostname: adguard
-    # Volumes store your data between container upgrades
-    volumes:
-      - "./adguard/opt-adguard-work:/opt/adguardhome/work"
-      - "./adguard/opt-adguard-conf:/opt/adguardhome/conf"
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "67:67/udp"
-      - "853:853/tcp"
-      - "853:853/udp"
-      - "8080:8080/tcp"
-      - "10443:10443/tcp"
-      - "3000:3000/tcp"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    networks:
-      private_network:
-        ipv4_address: 10.5.11.3
-
   owncloud:
     image: owncloud/server:${OWNCLOUD_VERSION}
     container_name: owncloud_server
-    hostname: owncloud_server
+    hostname: owncloud
     restart: unless-stopped
     ports:
       - ${HTTP_PORT}:8080
@@ -69,8 +29,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    labels:
-      - "com.centurylinklabs.watchtower.enable=false"
     volumes:
       - /volume1/docker/owncloud/data:/mnt/data
 
@@ -91,15 +49,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    labels:
-      - "com.centurylinklabs.watchtower.enable=false"
     volumes:
       - /volume1/docker/owncloud/database:/var/lib/mysql
 
   redis:
     image: redis:6
     container_name: owncloud_redis
-    hostname: owncloud_redis
     restart: always
     command: ["--databases", "1"]
     healthcheck:
@@ -107,30 +62,5 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    labels:
-      - "com.centurylinklabs.watchtower.enable=false"
     volumes:
       - /volume1/docker/owncloud/redis:/data
-
-  watchtower:
-    container_name: watchtower
-    hostname: watchtower
-    image: containrrr/watchtower
-    restart: unless-stopped
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_INCLUDE_RESTARTING=true
-      - WATCHTOWER_ROLLING_RESTART=true
-
-networks:
-  private_network:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 10.5.11.0/29
