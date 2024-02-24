@@ -24,8 +24,8 @@ services:
     hostname: adguard
     # Volumes store your data between container upgrades
     volumes:
-      - "./adguard/opt-adguard-work:/opt/adguardhome/work"
-      - "./adguard/opt-adguard-conf:/opt/adguardhome/conf"
+      - "/volume1/docker/adguard/opt-adguard-work:/opt/adguardhome/work"
+      - "/volume1/docker/adguard/opt-adguard-conf:/opt/adguardhome/conf"
     ports:
       - "53:53/tcp"
       - "53:53/udp"
