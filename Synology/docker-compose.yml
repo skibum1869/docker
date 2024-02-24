@@ -32,9 +32,9 @@ services:
       - "67:67/udp"
       - "853:853/tcp"
       - "853:853/udp"
+      - "3000:3000/tcp"
       - "8080:8080/tcp"
       - "10443:10443/tcp"
-      - "3000:3000/tcp"
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
