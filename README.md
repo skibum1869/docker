@@ -1,4 +1,4 @@
-# doh-pihole
+# Docker
 
 ## Pre-requisites:
 
@@ -10,7 +10,3 @@
 ```
 docker-compose up -d
 ```
-
-Set your DNS to 127.0.0.1 (or whatever this machine is if using this as a DNS server for more than just the local machine).
-
-pihole password: `CHANGEME` (Can change in the docker-compose.yml file)
