@@ -1,46 +1,6 @@
 version: "3.5"
 
 services:
-  unbound:
-    container_name: unbound
-    hostname: unbound
-    image: klutchell/unbound
-    restart: unless-stopped
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    networks:
-      private_network:
-        ipv4_address: 10.5.11.2
-
-  adguard:
-    depends_on: [unbound]
-    container_name: adguard
-    image: adguard/adguardhome
-    restart: unless-stopped
-    hostname: adguard
-    # Volumes store your data between container upgrades
-    volumes:
-      - "/volume1/docker/adguard/opt-adguard-work:/opt/adguardhome/work"
-      - "/volume1/docker/adguard/opt-adguard-conf:/opt/adguardhome/conf"
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "67:67/udp"
-      - "853:853/tcp"
-      - "853:853/udp"
-      - "3000:3000/tcp"
-      - "8080:8080/tcp"
-      - "10443:10443/tcp"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    networks:
-      private_network:
-        ipv4_address: 10.5.11.3
-
   owncloud:
     image: owncloud/server:${OWNCLOUD_VERSION}
     container_name: owncloud_server
@@ -127,10 +87,3 @@ services:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_INCLUDE_RESTARTING=true
       - WATCHTOWER_ROLLING_RESTART=true
-
-networks:
-  private_network:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 10.5.11.0/29
