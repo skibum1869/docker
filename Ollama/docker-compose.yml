@@ -1,0 +1,68 @@
+version: '3.8'
+services:
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama
+  #   hostname: ollama
+  #   restart:  unless-stopped
+  #   ports:
+  #     - 7869:11434
+  #   volumes:
+  #     - .:/code
+  #     - ./ollama/ollama:/root/.ollama
+  #   pull_policy: always
+  #   tty: true
+  #   environment:
+  #     - OLLAMA_KEEP_ALIVE=24h
+  #     - OLLAMA_HOST=0.0.0.0
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    hostname: ollama
+    restart:  unless-stopped
+    expose:
+    - 11434/tcp
+    ports:
+    - 11434:11434/tcp
+    healthcheck:
+      test: ollama --version || exit 1
+    command: serve
+    volumes:
+      - ollama:/root/.ollama
+    pull_policy: always
+    tty: true
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+
+  webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: webui
+    hostname: webui
+    restart:  unless-stopped
+    expose:
+     - 8080/tcp
+    ports:
+     - 8080:8080/tcp
+    environment:
+     - OLLAMA_BASE_URL=http://ollama:11434
+     # uncomment the following if you are running ollama on the docker host and remove the ollama service below
+     # - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    volumes:
+      - open-webui:/app/backend/data
+    depends_on:
+     - ollama
+
+  # tunnel:
+  #   image: cloudflare/cloudflared:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     - TUNNEL_URL=http://webui:8080
+  #   command: tunnel --no-autoupdate
+  #   depends_on:
+  #     - webui
+
+volumes:
+  ollama:
+  open-webui:
