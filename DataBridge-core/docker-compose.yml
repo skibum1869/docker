@@ -111,6 +111,10 @@ services:
     networks:
       - databridge-network
 
+networks:
+  databridge-network:
+    driver: bridge
+
 volumes:
   ollama:
   open-webui:
