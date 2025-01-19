@@ -61,6 +61,59 @@ services:
       - WATCHTOWER_INCLUDE_RESTARTING=true
       - WATCHTOWER_ROLLING_RESTART=true
 
+  databridge:
+    container_name: databridge
+    hostname: databridge
+    image: adityava369/databridge-core:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-secret-key-here}
+      - POSTGRES_URI=postgresql+asyncpg://databridge:databridge@postgres:5432/databridge
+      - PGPASSWORD=databridge
+      - HOST=0.0.0.0
+      - PORT=8000
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - databridge-storage:/app/storage
+      - databridge-logs:/app/logs
+      - ./databridge.toml:/app/databridge.toml
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    networks:
+      - databridge-network
+
+  postgres:
+    container_name: postgres
+    hostname: postgres
+    image: postgres:17
+    restart: unless-stopped
+    shm_size: 128mb
+    environment:
+      - POSTGRES_USER=databridge
+      - POSTGRES_PASSWORD=databridge
+      - POSTGRES_DB=databridge
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U databridge -d databridge"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - databridge-network
+
 volumes:
   ollama:
   open-webui:
+  databridge-storage:
+  databridge-logs:
+  postgres_data:
