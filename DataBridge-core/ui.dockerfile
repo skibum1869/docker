@@ -1,16 +1,16 @@
-FROM ubuntu:latest
+FROM node:23
 
 EXPOSE 3000:3000/tcp
 
-# Install build dependencies
-RUN apt-get clean \
-    && apt-get update
+RUN apt-get install -y git
 
-RUN apt-get install -y git npm
+RUN adduser databridge
 
-RUN git clone https://github.com/databridge-org/databridge-core.git /opt/databridge
+USER databridge
 
-RUN cd /opt/databridge/ui-component/ & \
-    npm install & \
-    npm run build & \
+RUN git clone https://github.com/databridge-org/databridge-core.git /home/databridge/src
+
+WORKDIR /home/databridge/src/ui-component
+
+RUN npm run build &\
     npm start
