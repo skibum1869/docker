@@ -87,6 +87,18 @@ services:
     networks:
       - databridge-network
 
+  databridgeui:
+    container_name: databridgeui
+    hostname: databridgeui
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ui.dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - databridge-network
+
   postgres:
     container_name: postgres
     hostname: postgres
