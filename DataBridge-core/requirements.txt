@@ -1,5 +1,0 @@
-requests
-databridge
-pathlib
-readline
-rlcompleter
