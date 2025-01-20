@@ -4,12 +4,13 @@ EXPOSE 3000:3000/tcp
 
 # Install build dependencies
 RUN apt-get clean \
-    && apt-get update \
-    && apt-get install -y git npm
+    && apt-get update
 
-# Copy ui scripts
-COPY ./ui/ ~/ui
+RUN apt-get install -y git npm
 
-RUN cd ~/ui/ & \
-    npm run build \
+RUN git clone https://github.com/databridge-org/databridge-core.git /opt/databridge
+
+RUN cd /opt/databridge/ui-component/ & \
+    npm install & \
+    npm run build & \
     npm start
